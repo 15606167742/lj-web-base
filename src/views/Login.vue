@@ -1,8 +1,8 @@
 <template>
 	<div class="main">
 		<div class="login">
-			<el-input v-model="username" type="text" :minlength="5" :maxlength="10" :show-word-limit="true" placeholder="请输入内容" />
-			<com-text v-model="username" placeholder="啥" :maxlength="20" :show-word-limit="true">
+			<el-input v-model="username" type="text" resize="both" />
+			<com-text v-model="username" placeholder="啥">
 				<template #prefix>
 					<i class="iconfont icondiff"></i>
 				</template>
