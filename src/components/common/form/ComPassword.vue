@@ -4,9 +4,7 @@
 		:name="name"
 		type="text"
 		:placeholder="placeholder"
-		:minlength="minlength"
-		:maxlength="maxlength"
-		:show-word-limit="showWordLimit"
+		show-password
 		:clearable="clearable"
 		@input="$emit('input', $event)"
 	>
@@ -27,7 +25,7 @@
 
 <script>
 export default {
-	name: 'ComText',
+	name: 'ComPassword',
 	props: {
 		value: {
 			type: String
@@ -37,16 +35,6 @@ export default {
 		},
 		placeholder: {
 			type: String
-		},
-		minlength: {
-			type: Number
-		},
-		maxlength: {
-			type: Number
-		},
-		showWordLimit: {
-			type: Boolean,
-			default: false
 		},
 		clearable: {
 			type: Boolean,
