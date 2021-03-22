@@ -8,6 +8,7 @@
 		:maxlength="maxlength"
 		:show-word-limit="showWordLimit"
 		:clearable="clearable"
+		:size="size"
 		@input="$emit('input', $event)"
 	>
 		<template #prefix>
@@ -54,7 +55,13 @@ export default {
 		clearable: {
 			type: Boolean,
 			default: true
-		}
+		},
+		size: {
+			type: String,
+			validator: function(value) {
+				return ['large', 'medium', 'small', 'mini'].indexOf(value) !== -1;
+			}
+		},
 	},
 	data() {
 		return {

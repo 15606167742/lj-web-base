@@ -1,109 +1,156 @@
 <script>
-	export default {
-		name: 'ComForm',
-		render(createElement) {
-			this.fillModel();
-			console.log(this.$slots.default)
-			let elFormItems = createFormItems(this.$slots.default);
-
-			function createFormItems(VNodes) {
-				return VNodes.map(item => {
-					//todo子节点
-					let childNodeArr;
-					if (item.componentOptions && item.componentOptions.tag === 'com-template') {
-						if (item.componentOptions.children) {
-							childNodeArr = createChildFormItems(item.componentOptions.children);
-						} else {
-							childNodeArr = [];
-						}
+export default {
+	name: 'ComForm',
+	render(createElement) {
+		let $this = this;
+		console.log(this.$slots.default);
+		let elFormItems = createFormItems(this.$slots.default);
+		//遍历生成一层子节点
+		function createFormItems(VNodes) {
+			return VNodes.map(VNode => {
+				$this.fillModel(VNode);
+				//生成子节点数组
+				let childNodeArr;
+				if (VNode.componentOptions && VNode.componentOptions.tag === 'com-template') {
+					if (VNode.componentOptions.children) {
+						childNodeArr = createChildFormItems(VNode.componentOptions.children);
 					} else {
-						childNodeArr = [item];
+						childNodeArr = [];
 					}
-					return createElement('el-form-item', {
+				} else {
+					childNodeArr = [VNode];
+				}
+				return createElement(
+					'el-form-item',
+					{
 						props: {
-							'label': (item.componentOptions && item.componentOptions.propsData && item
-								.componentOptions.propsData.label) || (item.data && item.data.attrs &&
-								item.data.attrs.label),
+							label: getComProp(VNode, 'label'),
+							size: getComProp(VNode, 'size')
+						}
+					},
+					childNodeArr
+				);
+			});
+		}
+		//遍历生成二层及以后子节点
+		function createChildFormItems(VNodes) {
+			return VNodes.map(VNode => {
+				$this.fillModel(VNode);
+				//生成子节点数组
+				let childNodeArr;
+				if (VNode.componentOptions && VNode.componentOptions.tag === 'com-template') {
+					if (VNode.componentOptions.children) {
+						childNodeArr = createChildFormItems(VNode.componentOptions.children);
+					} else {
+						childNodeArr = [];
+					}
+				} else if ((VNode.data && VNode.data.model) || (VNode.data && VNode.data.directives && this.isBindModel(VNode.data.directives))) {
+					childNodeArr = [VNode];
+				}
+				if (childNodeArr) {
+					return createElement(
+						'el-form-item',
+						{
+							props: {
+								label: getComProp(VNode, 'label'),
+								size: getComProp(VNode, 'size')
+							}
 						},
-					}, childNodeArr);
-				})
-			}
+						childNodeArr
+					);
+				} else {
+					return VNode;
+				}
+			});
+		}
 
-			function createChildFormItems(VNodes) {
-				return VNodes.map(item => {
-					return item
-				})
-			}
-			return createElement('el-form', {
+		function getComProp(VNode, prop) {
+			return (VNode.componentOptions && VNode.componentOptions.propsData && VNode.componentOptions.propsData[prop]) || (VNode.data && VNode.data.attrs && VNode.data.attrs[prop]);
+		}
+
+		return createElement(
+			'el-form',
+			{
 				props: {
-					'model': this.model,
+					model: this.model,
 					'label-width': this.labelWidth ? this.labelWidth : 'auto',
 					'label-position': this.labelPosition,
-					'size': this.size,
-				},
-			}, elFormItems);
-		},
-		props: {
-			model: {
-				type: Object,
-				required: true
-			},
-			modelName: {
-				type: String,
-				required: true
-			},
-			labelWidth: {
-				type: String,
-				defalut: 'auto'
-			},
-			labelPosition: {
-				type: String,
-				validator: function(value) {
-					return ['right', 'left', 'top'].indexOf(value) !== -1
+					size: this.size
 				}
 			},
-			size: {
-				type: String,
-				validator: function(value) {
-					return ['medium', 'small', 'mini'].indexOf(value) !== -1
-				}
-			},
+			elFormItems
+		);
+	},
+	props: {
+		model: {
+			type: Object,
+			required: true
 		},
-		data() {
-			return {
-
+		modelName: {
+			type: String,
+			required: true
+		},
+		labelWidth: {
+			type: String,
+			defalut: 'auto'
+		},
+		labelPosition: {
+			type: String,
+			validator: function(value) {
+				return ['right', 'left', 'top'].indexOf(value) !== -1;
 			}
 		},
-		methods: {
-			fillModel() {
-				this.$slots.default.forEach(item => {
-					if (item.data && item.data.model && item.data.model.value === undefined &&
-						item.data.model.expression && item.data.model.expression.indexOf(this.modelName) === 0) {
-						this.fillObj(this.model, item.data.model.expression);
-					} else if (item.data && item.data.directives && item.data.directives[0] && item.data
-						.directives[0].expression && item.data.directives[0].expression.indexOf(this.modelName) ===
-						0) {
-						this.fillObj(this.model, item.data.directives[0].expression);
-					}
-				})
-			},
-			fillObj(obj, attrStr) {
-				let attrArr;
-				if (Array.isArray(attrStr)) {
-					attrArr = JSON.parse(JSON.stringify(attrStr));
-				} else {
-					attrArr = attrStr.split('.');
-				}
-				attrArr.shift();
-				attrArr.forEach(attr => {
-					if (obj[attr] === undefined) {
-						this.$set(obj, attr, null);
-					}
-					obj = obj[attr];
-				})
+		size: {
+			type: String,
+			validator: function(value) {
+				return ['large', 'medium', 'small', 'mini'].indexOf(value) !== -1;
 			}
 		}
-	};
+	},
+	data() {
+		return {};
+	},
+	methods: {
+		//完善model
+		fillModel(VNode) {
+			if (VNode.data && VNode.data.model && VNode.data.model.value === undefined && VNode.data.model.expression && VNode.data.model.expression.indexOf(this.modelName) === 0) {
+				this.fillObj(this.model, VNode.data.model.expression);
+			} else if (VNode.data && VNode.data.directives && this.isBindModel(VNode.data.directives) && this.isBindModel(VNode.data.directives).value === undefined) {
+				this.isBindModel(VNode.data.directives);
+				this.fillObj(this.model, VNode.data.directives[0].expression);
+			}
+		},
+		//判断是否绑定model属性,是:返回v-model指令元素,否:返回false
+		isBindModel(directives) {
+			let modelArr = directives.filter(directive => {
+				return directive.rawName === 'v-model';
+			});
+			if (modelArr.length === 0) {
+				return false;
+			} else if (modelArr[0].expression && modelArr[0].expression.indexOf(this.modelName) === 0) {
+				return modelArr[0];
+			} else {
+				return false;
+			}
+		},
+		//完善指定对象
+		fillObj(obj, attrStr) {
+			let attrArr;
+			if (Array.isArray(attrStr)) {
+				attrArr = JSON.parse(JSON.stringify(attrStr));
+			} else {
+				attrArr = attrStr.split('.');
+			}
+			attrArr.shift();
+			attrArr.forEach(attr => {
+				if (obj[attr] === undefined) {
+					this.$set(obj, attr, null);
+				}
+				obj = obj[attr];
+			});
+		}
+	}
+};
 </script>
 
 <style></style>
