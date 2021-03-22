@@ -35,6 +35,9 @@ export default {
 		name: {
 			type: String
 		},
+		label: {
+			type: String
+		},
 		placeholder: {
 			type: String
 		},

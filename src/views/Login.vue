@@ -14,6 +14,14 @@
 				<el-form-item label="测试" prop="name">
 					<el-input v-model="test.name" />
 				</el-form-item>
+				<el-form-item label="测试">
+					<el-form-item label="测试abc" prop="abc">
+						<input :value="formdata.abc" />
+					</el-form-item>
+					<el-form-item label="测试name" prop="name">
+						<input v-model="formdata.name" />
+					</el-form-item>
+				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="onSubmit">立即创建</el-button>
 					<el-button type="warning" @click="onReset">重置</el-button>
@@ -28,15 +36,14 @@
 				</com-text>
 				<com-password v-model="formdata.password" label="密码"></com-password>
 				<com-text v-model="test.name" label="测试" />
-				<input :value="formdata.abc" />
-				<input v-model="formdata.abc" />
+				<input :value="formdata.abc" label="abc" />
+				<input v-model="formdata.name" />
 				<com-text v-model="formdata.info.age" label="年龄" />
-				<com-template>
+				<com-template label="按钮">
 					<el-button type="primary" @click="onSubmit">立即创建</el-button>
 					<el-button>取消</el-button>
 				</com-template>
 				<com-template>
-					你瞅啥
 				</com-template>
 			</com-form>
 		</div>

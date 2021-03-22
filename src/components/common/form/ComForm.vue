@@ -2,19 +2,38 @@
 	export default {
 		name: 'ComForm',
 		render(createElement) {
-			this.fillModel()
-			let elFormItems = this.$slots.default.map(item => {
-				if (item.componentOptions && item.componentOptions.tag === 'com-template') {
-					return createElement('el-form-item', item.componentOptions.children);
-				} else {
+			this.fillModel();
+			console.log(this.$slots.default)
+			let elFormItems = createFormItems(this.$slots.default);
+
+			function createFormItems(VNodes) {
+				return VNodes.map(item => {
+					//todo子节点
+					let childNodeArr;
+					if (item.componentOptions && item.componentOptions.tag === 'com-template') {
+						if (item.componentOptions.children) {
+							childNodeArr = createChildFormItems(item.componentOptions.children);
+						} else {
+							childNodeArr = [];
+						}
+					} else {
+						childNodeArr = [item];
+					}
 					return createElement('el-form-item', {
 						props: {
-							'label': item.data && item.data.attrs && item.data.attrs.label ? item.data
-								.attrs.label : ''
+							'label': (item.componentOptions && item.componentOptions.propsData && item
+								.componentOptions.propsData.label) || (item.data && item.data.attrs &&
+								item.data.attrs.label),
 						},
-					}, [item]);
-				}
-			})
+					}, childNodeArr);
+				})
+			}
+
+			function createChildFormItems(VNodes) {
+				return VNodes.map(item => {
+					return item
+				})
+			}
 			return createElement('el-form', {
 				props: {
 					'model': this.model,
@@ -60,13 +79,28 @@
 				this.$slots.default.forEach(item => {
 					if (item.data && item.data.model && item.data.model.value === undefined &&
 						item.data.model.expression && item.data.model.expression.indexOf(this.modelName) === 0) {
-						console.log(item.data.model.expression.indexOf(this.modelName))
-						// this.fillObj(this.model, expression_array)
+						this.fillObj(this.model, item.data.model.expression);
+					} else if (item.data && item.data.directives && item.data.directives[0] && item.data
+						.directives[0].expression && item.data.directives[0].expression.indexOf(this.modelName) ===
+						0) {
+						this.fillObj(this.model, item.data.directives[0].expression);
 					}
 				})
 			},
-			fillObj(obj, str) {
-				this.$set(obj, 'test', 666)
+			fillObj(obj, attrStr) {
+				let attrArr;
+				if (Array.isArray(attrStr)) {
+					attrArr = JSON.parse(JSON.stringify(attrStr));
+				} else {
+					attrArr = attrStr.split('.');
+				}
+				attrArr.shift();
+				attrArr.forEach(attr => {
+					if (obj[attr] === undefined) {
+						this.$set(obj, attr, null);
+					}
+					obj = obj[attr];
+				})
 			}
 		}
 	};
