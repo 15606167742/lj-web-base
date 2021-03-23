@@ -24,8 +24,9 @@ export default {
 					'el-form-item',
 					{
 						props: {
-							label: getComProp(VNode, 'label'),
-							size: getComProp(VNode, 'size')
+							prop: $this.getModelProp(VNode),
+							label: $this.getComProp(VNode, 'label'),
+							size: $this.getComProp(VNode, 'size')
 						}
 					},
 					childNodeArr
@@ -44,7 +45,7 @@ export default {
 					} else {
 						childNodeArr = [];
 					}
-				} else if ((VNode.data && VNode.data.model) || (VNode.data && VNode.data.directives && this.isBindModel(VNode.data.directives))) {
+				} else if ((VNode.data && VNode.data.model) || (VNode.data && VNode.data.directives && $this.isHasVmodel(VNode.data.directives))) {
 					childNodeArr = [VNode];
 				}
 				if (childNodeArr) {
@@ -52,8 +53,8 @@ export default {
 						'el-form-item',
 						{
 							props: {
-								label: getComProp(VNode, 'label'),
-								size: getComProp(VNode, 'size')
+								label: $this.getComProp(VNode, 'label'),
+								size: $this.getComProp(VNode, 'size')
 							}
 						},
 						childNodeArr
@@ -64,10 +65,6 @@ export default {
 			});
 		}
 
-		function getComProp(VNode, prop) {
-			return (VNode.componentOptions && VNode.componentOptions.propsData && VNode.componentOptions.propsData[prop]) || (VNode.data && VNode.data.attrs && VNode.data.attrs[prop]);
-		}
-
 		return createElement(
 			'el-form',
 			{
@@ -76,7 +73,8 @@ export default {
 					'label-width': this.labelWidth ? this.labelWidth : 'auto',
 					'label-position': this.labelPosition,
 					size: this.size
-				}
+				},
+				ref: 'comform',
 			},
 			elFormItems
 		);
@@ -116,11 +114,10 @@ export default {
 			if (VNode.data && VNode.data.model && VNode.data.model.value === undefined && VNode.data.model.expression && VNode.data.model.expression.indexOf(this.modelName) === 0) {
 				this.fillObj(this.model, VNode.data.model.expression);
 			} else if (VNode.data && VNode.data.directives && this.isBindModel(VNode.data.directives) && this.isBindModel(VNode.data.directives).value === undefined) {
-				this.isBindModel(VNode.data.directives);
 				this.fillObj(this.model, VNode.data.directives[0].expression);
 			}
 		},
-		//判断是否绑定model属性,是:返回v-model指令元素,否:返回false
+		//判断原始标签是否绑定model属性,是:返回v-model指令元素,否:返回false
 		isBindModel(directives) {
 			let modelArr = directives.filter(directive => {
 				return directive.rawName === 'v-model';
@@ -148,6 +145,34 @@ export default {
 				}
 				obj = obj[attr];
 			});
+		},
+		//判断始标签是否包含v-model指令
+		isHasVmodel(directives){
+			let modelArr = directives.filter(directive => {
+				return directive.rawName === 'v-model';
+			});
+			if (modelArr.length === 0) {
+				return false;
+			} else if (modelArr[0].expression) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		//获取modelprop
+		getModelProp(VNode) {
+			if (VNode.data && VNode.data.model && VNode.data.model.expression && VNode.data.model.expression.indexOf(this.modelName) === 0) {
+				// this.fillObj(this.model, VNode.data.model.expression);
+			} else if (VNode.data && VNode.data.directives && this.isBindModel(VNode.data.directives)) {
+				// this.fillObj(this.model, VNode.data.directives[0].expression);
+			}
+		},
+		//获取一般prop
+		getComProp(VNode, prop) {
+			return (VNode.componentOptions && VNode.componentOptions.propsData && VNode.componentOptions.propsData[prop]) || (VNode.data && VNode.data.attrs && VNode.data.attrs[prop]);
+		},
+		resetFields(){
+			this.$refs.comform.resetFields();
 		}
 	}
 };

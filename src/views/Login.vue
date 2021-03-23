@@ -14,22 +14,19 @@
 					<el-button>取消</el-button>
 				</el-form-item>
 			</el-form> -->
-			<com-form :model="formdata" model-name="formdata" size="mini">
-				<com-text v-model="formdata.username" label="用户名" placeholder="啥">
-					<template #prepend>
-						<button>干</button>
-					</template>
-				</com-text>
+			<com-form :model="formdata" model-name="formdata" ref="form" size="mini">
+				<com-text v-model="formdata.username" label="用户名" placeholder="啥" />
 				<com-password v-model="formdata.password" label="密码"></com-password>
 				<com-text v-model="test.name" label="测试" size="large" />
 				<input :value="formdata.abc" label="abc" v-show="true" />
-				<input v-model="formdata.name" />
 				<com-text v-model="formdata.info.age" label="年龄" />
 				<com-template>
+					<input v-model="formdata.name" />
 					<com-text v-model="formdata.name" />---
 					<com-text v-model="formdata.info.age" label="年龄" />
 					<com-template label="按钮">
 						<el-button type="primary" @click="onSubmit">立即创建</el-button>
+						<el-button type="warning" @click="onReset">重置</el-button>
 						<el-button>取消</el-button>
 					</com-template>
 				</com-template>
@@ -80,7 +77,7 @@ export default {
 	},
 	methods: {
 		onSubmit() {
-			console.log(this.formdata, this.test);
+			console.log(this.formdata);
 		},
 		onReset() {
 			this.$refs.form.resetFields();
