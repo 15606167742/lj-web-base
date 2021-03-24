@@ -3,10 +3,11 @@ export default {
 	name: 'ComForm',
 	render(createElement) {
 		let $this = this;
-		console.log(this.$slots.default);
-		let elFormItems = createFormItems(this.$slots.default);
+		console.log(this.$slots.default, this.column);
+		let elFormItems = createFormItems($this.$slots.default);
 		//遍历生成一层子节点
 		function createFormItems(VNodes) {
+			// if()
 			return VNodes.map(VNode => {
 				$this.fillModel(VNode);
 				//生成子节点数组
@@ -23,6 +24,12 @@ export default {
 				return createElement(
 					'el-form-item',
 					{
+						style: {
+							'box-sizing': 'border-box',
+							'flex-basis': $this.computePercentage($this.getComProp(VNode, 'colspan') ? $this.getComProp(VNode, 'colspan') : 1, $this.column ? $this.column : 2),
+							'padding-right': '3%',
+							overflow: 'hidden'
+						},
 						props: {
 							prop: $this.getModelProp(VNode),
 							label: $this.getComProp(VNode, 'label'),
@@ -52,7 +59,12 @@ export default {
 					return createElement(
 						'el-form-item',
 						{
+							style: {
+								'flex-grow': 1,
+								overflow: 'hidden'
+							},
 							props: {
+								prop: $this.getModelProp(VNode),
 								label: $this.getComProp(VNode, 'label'),
 								size: $this.getComProp(VNode, 'size')
 							}
@@ -74,7 +86,7 @@ export default {
 					'label-position': this.labelPosition,
 					size: this.size
 				},
-				ref: 'comform',
+				ref: 'comform'
 			},
 			elFormItems
 		);
@@ -89,8 +101,7 @@ export default {
 			required: true
 		},
 		labelWidth: {
-			type: String,
-			defalut: 'auto'
+			type: String
 		},
 		labelPosition: {
 			type: String,
@@ -103,6 +114,9 @@ export default {
 			validator: function(value) {
 				return ['large', 'medium', 'small', 'mini'].indexOf(value) !== -1;
 			}
+		},
+		column: {
+			type: Number
 		}
 	},
 	data() {
@@ -114,7 +128,7 @@ export default {
 			if (VNode.data && VNode.data.model && VNode.data.model.value === undefined && VNode.data.model.expression && VNode.data.model.expression.indexOf(this.modelName) === 0) {
 				this.fillObj(this.model, VNode.data.model.expression);
 			} else if (VNode.data && VNode.data.directives && this.isBindModel(VNode.data.directives) && this.isBindModel(VNode.data.directives).value === undefined) {
-				this.fillObj(this.model, VNode.data.directives[0].expression);
+				this.fillObj(this.model, this.isBindModel(VNode.data.directives).expression);
 			}
 		},
 		//判断原始标签是否绑定model属性,是:返回v-model指令元素,否:返回false
@@ -147,7 +161,7 @@ export default {
 			});
 		},
 		//判断始标签是否包含v-model指令
-		isHasVmodel(directives){
+		isHasVmodel(directives) {
 			let modelArr = directives.filter(directive => {
 				return directive.rawName === 'v-model';
 			});
@@ -161,21 +175,43 @@ export default {
 		},
 		//获取modelprop
 		getModelProp(VNode) {
+			let propArr;
 			if (VNode.data && VNode.data.model && VNode.data.model.expression && VNode.data.model.expression.indexOf(this.modelName) === 0) {
-				// this.fillObj(this.model, VNode.data.model.expression);
+				propArr = VNode.data.model.expression.split('.');
 			} else if (VNode.data && VNode.data.directives && this.isBindModel(VNode.data.directives)) {
-				// this.fillObj(this.model, VNode.data.directives[0].expression);
+				propArr = this.isBindModel(VNode.data.directives).expression.split('.');
+			}
+			if (propArr) {
+				propArr.shift();
+				return propArr.join('.');
+			} else {
+				return propArr;
 			}
 		},
 		//获取一般prop
 		getComProp(VNode, prop) {
 			return (VNode.componentOptions && VNode.componentOptions.propsData && VNode.componentOptions.propsData[prop]) || (VNode.data && VNode.data.attrs && VNode.data.attrs[prop]);
 		},
-		resetFields(){
+		//计算百分数
+		computePercentage(numerator, denominator) {
+			return ((parseInt(numerator) / parseInt(denominator)) * 100).toFixed(2) + '%';
+		},
+		//重置表单
+		resetFields() {
 			this.$refs.comform.resetFields();
 		}
 	}
 };
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.el-form {
+	display: flex;
+	flex-wrap: wrap;
+	::v-deep .el-form-item {
+		.el-form-item__content {
+			display: flex;
+		}
+	}
+}
+</style>

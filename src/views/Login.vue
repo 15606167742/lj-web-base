@@ -17,18 +17,19 @@
 			<com-form :model="formdata" model-name="formdata" ref="form" size="mini">
 				<com-text v-model="formdata.username" label="用户名" placeholder="啥" />
 				<com-password v-model="formdata.password" label="密码"></com-password>
-				<com-text v-model="test.name" label="测试" size="large" />
+				<com-text v-model="test.name" label="测试" size="large" colspan="2" />
+				<com-text v-model="formdata.info.age" label="大运小云年龄" />
 				<input :value="formdata.abc" label="abc" v-show="true" />
-				<com-text v-model="formdata.info.age" label="年龄" />
-				<com-template>
-					<input v-model="formdata.name" />
-					<com-text v-model="formdata.name" />---
-					<com-text v-model="formdata.info.age" label="年龄" />
-					<com-template label="按钮">
-						<el-button type="primary" @click="onSubmit">立即创建</el-button>
-						<el-button type="warning" @click="onReset">重置</el-button>
-						<el-button>取消</el-button>
-					</com-template>
+				<com-template colspan="2">
+					<com-text v-model="formdata.name" />
+					<span style="margin: 0 10px;">-</span>
+					<com-text v-model="formdata.info.age" />
+				</com-template>
+				<input v-model="formdata.name" />
+				<com-template label="按钮" :colspan="2">
+					<el-button type="primary" @click="onSubmit">立即创建</el-button>
+					<el-button type="warning" @click="onReset">重置</el-button>
+					<el-button>取消</el-button>
 				</com-template>
 			</com-form>
 		</div>
