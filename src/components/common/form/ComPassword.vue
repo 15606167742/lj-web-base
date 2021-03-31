@@ -3,7 +3,7 @@
 		:value="value"
 		:name="name"
 		type="text"
-		:placeholder="placeholder"
+		:placeholder="placeholder || label"
 		show-password
 		:clearable="clearable"
 		:size="size"

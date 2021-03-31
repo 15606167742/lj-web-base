@@ -28,11 +28,12 @@ export default {
 							'box-sizing': 'border-box',
 							'flex-basis': $this.computePercentage($this.getComProp(VNode, 'colspan') ? $this.getComProp(VNode, 'colspan') : 1, $this.column ? $this.column : 2),
 							'padding-right': '3%',
-							overflow: 'hidden'
 						},
 						props: {
 							prop: $this.getModelProp(VNode),
+							rules: $this.getComProp(VNode, 'rules'),
 							label: $this.getComProp(VNode, 'label'),
+							required: $this.getComProp(VNode, 'required'),
 							size: $this.getComProp(VNode, 'size')
 						}
 					},
@@ -61,11 +62,12 @@ export default {
 						{
 							style: {
 								'flex-grow': 1,
-								overflow: 'hidden'
 							},
 							props: {
 								prop: $this.getModelProp(VNode),
+								rules: $this.getComProp(VNode, 'rules'),
 								label: $this.getComProp(VNode, 'label'),
+								required: $this.getComProp(VNode, 'required'),
 								size: $this.getComProp(VNode, 'size')
 							}
 						},
@@ -82,9 +84,10 @@ export default {
 			{
 				props: {
 					model: this.model,
+					rules: this.rules,
 					'label-width': this.labelWidth ? this.labelWidth : 'auto',
 					'label-position': this.labelPosition,
-					size: this.size
+					size: this.size,
 				},
 				ref: 'comform'
 			},
@@ -95,6 +98,9 @@ export default {
 		model: {
 			type: Object,
 			required: true
+		},
+		rules: {
+			type: Object
 		},
 		modelName: {
 			type: String,
@@ -196,10 +202,26 @@ export default {
 		computePercentage(numerator, denominator) {
 			return ((parseInt(numerator) / parseInt(denominator)) * 100).toFixed(2) + '%';
 		},
+		//表单整体验证
+		validate() {
+			return new Promise(resolve=>{
+				this.$refs.comform.validate().then(()=>{
+					resolve();
+				}).catch(()=>{});
+			})
+		},
+		//表单部分验证
+		validateField(props, callback) {
+			this.$refs.comform.validateField(props, callback);
+		},
 		//重置表单
 		resetFields() {
 			this.$refs.comform.resetFields();
-		}
+		},
+		//移除表单验证
+		clearValidate(props) {
+			this.$refs.comform.clearValidate(props);
+		},
 	}
 };
 </script>

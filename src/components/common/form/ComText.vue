@@ -3,7 +3,7 @@
 		:value="value"
 		:name="name"
 		type="text"
-		:placeholder="placeholder"
+		:placeholder="placeholder || label"
 		:minlength="minlength"
 		:maxlength="maxlength"
 		:show-word-limit="showWordLimit"
