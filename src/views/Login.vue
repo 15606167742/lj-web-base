@@ -2,12 +2,22 @@
 	<div class="main">
 		<div class="login">
 			<!-- <el-form :model="formdata" :rules="formRules" ref="form" label-width="auto" size="medium">
-				<el-form-item label="账号" prop="username"><el-input v-model="formdata.username" type="text" /></el-form-item>
+				<el-form-item label="账号" prop="username">
+					<el-input v-model="formdata.username" type="text" prefix-icon="el-icon-video-camera-solid">
+						<template #prepend>
+							xx
+						</template>
+					</el-input>
+				</el-form-item>
 				<el-form-item label="密码" prop="password"><el-input v-model="formdata.password" show-password /></el-form-item>
 				<el-form-item label="年龄" prop="info.age"><el-input v-model="formdata.info.age" type="number" /></el-form-item>
 				<el-form-item label="测试model" prop="name"><el-input v-model="test.name" size="big" /></el-form-item>
 				<el-form-item label="测试原始标签" prop="abc"><input :value="formdata.abc" @input="formdata.abc = $event.target.value" /></el-form-item>
 				<el-form-item label="测试原始标签" prop="name"><input v-model="formdata.name" /></el-form-item>
+				<el-form-item label="测试文本" prop="name">
+					<el-input v-model="formdata.name" type="textarea" autosize placeholder="请输入内容" :rows="{ minRows: 2 }">
+					</el-input>
+				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="onSubmit">立即创建</el-button>
 					<el-button type="warning" @click="onReset">重置</el-button>
@@ -21,6 +31,7 @@
 				<com-password v-model="formdata.password" label="密码" :rules="passwordRules"></com-password>
 				<com-text v-model="test.name" label="测试" size="large" colspan="2" />
 				<com-text v-model="formdata.info.age" label="大运小云年龄" :rules="passwordRules" />
+				<com-textarea v-model="formdata.abc" label="文本" :rules="passwordRules" />
 				<input :value="formdata.abc" label="abc" />
 				<com-template colspan="2" label="起止日期" required>
 					<com-text v-model="formdata.name" :rules="passwordRules" />
@@ -42,6 +53,7 @@
 <script>
 	import ComTemplate from '@/components/common/form/ComTemplate.vue';
 	import ComText from '@/components/common/form/ComText.vue';
+	import ComTextarea from '@/components/common/form/ComTextarea.vue';
 	import ComPassword from '@/components/common/form/ComPassword.vue';
 	import ComForm from '@/components/common/form/ComForm.vue';
 	export default {
@@ -49,6 +61,7 @@
 		components: {
 			ComTemplate,
 			ComText,
+			ComTextarea,
 			ComPassword,
 			ComForm
 		},
