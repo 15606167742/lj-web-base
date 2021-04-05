@@ -1,7 +1,6 @@
 <template>
 	<el-input
 		:value="value"
-		:name="name"
 		type="textarea"
 		:placeholder="placeholder || label"
 		:minlength="minlength"
@@ -18,9 +17,6 @@ export default {
 	name: 'ComTextarea',
 	props: {
 		value: {
-			type: String
-		},
-		name: {
 			type: String
 		},
 		label: {

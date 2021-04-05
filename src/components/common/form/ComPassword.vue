@@ -1,7 +1,6 @@
 <template>
 	<el-input
 		:value="value"
-		:name="name"
 		type="text"
 		:placeholder="placeholder || label"
 		show-password
@@ -29,9 +28,6 @@ export default {
 	name: 'ComPassword',
 	props: {
 		value: {
-			type: String
-		},
-		name: {
 			type: String
 		},
 		label: {

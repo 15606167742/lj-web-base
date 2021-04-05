@@ -1,7 +1,6 @@
 <template>
 	<el-input
 		:value="value"
-		:name="name"
 		type="text"
 		:placeholder="placeholder || label"
 		:minlength="minlength"
@@ -31,9 +30,6 @@ export default {
 	name: 'ComText',
 	props: {
 		value: {
-			type: String
-		},
-		name: {
 			type: String
 		},
 		label: {
