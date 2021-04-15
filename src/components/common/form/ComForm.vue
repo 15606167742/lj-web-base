@@ -3,7 +3,7 @@ export default {
 	name: 'ComForm',
 	render(createElement) {
 		let $this = this;
-		console.log(this.$slots.default, this.column);
+		// console.log(this.$slots.default, this.column);
 		let elFormItems = createFormItems($this.$slots.default);
 		//遍历生成一层子节点
 		function createFormItems(VNodes) {
@@ -233,6 +233,7 @@ export default {
 	::v-deep .el-form-item {
 		.el-form-item__content {
 			display: flex;
+			flex-wrap: wrap;
 		}
 	}
 }

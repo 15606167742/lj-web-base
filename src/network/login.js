@@ -2,12 +2,10 @@ import {
 	requestMain
 } from '@/network/request.js';
 
-export function checkLogin(params) {
-	requestMain({
+export function login(params) {
+	return requestMain({
 		url: '/admin/user/login',
 		method: 'post',
 		params,
-	}).then(res=>{
-		console.log(res)
 	})
 }
