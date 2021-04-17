@@ -1,7 +1,7 @@
 <template>
 	<div class="main">
 		<div class="login">
-			<el-form :model="formdata" :rules="formRules" ref="form" label-width="auto" size="medium">
+			<!-- <el-form :model="formdata" :rules="formRules" ref="form" label-width="auto" size="medium">
 				<el-form-item label="账号" prop="sex">
 					<el-radio-group v-model="formdata.sex">
 						<el-radio label="线上品牌商赞助"></el-radio>
@@ -15,9 +15,9 @@
 						<el-button>取消</el-button>
 					</el-form-item>
 				</el-form-item>
-			</el-form>
+			</el-form> -->
 			<com-form ref="form" :model="formdata" model-name="formdata" :rules="formRules">
-				<com-text v-model="formdata.username" label="用户名" placeholder="啥" />
+				<com-text v-model="formdata.username" label="用户名" :minlength="3" :maxlength="10" placeholder="啥" />
 				<com-password v-model="formdata.password" label="密码" :rules="passwordRules"></com-password>
 				<com-radio v-model="formdata.sex" :radios="sexRadio" type="button" label="性别"></com-radio>
 				<com-radio v-model="formdata.sex" :radios="sexRadio" type="border" label="性别"></com-radio>
@@ -84,7 +84,7 @@
 				formRules: {
 					username: [{
 						required: true,
-						message: '请输入用户名',
+						message: '最小输入2个字符',
 						trigger: 'blur'
 					}],
 				},

@@ -1,47 +1,48 @@
 <template>
-	<el-radio-group
+	<el-checkbox-group
 		:value="value"
-		:radios="radios"
-		:value-key="valueKey"
-		:show-key="showKey"
+		:checkboxes="checkboxes"
+		:min="min"
+		:max="max"
 		:type="type"
 		:size="size"
-		:text-color="textColor"
+		:textColor="textColor"
 		:fill="fill"
 		@input="$emit('input', $event)"
 	>
 		<template v-if="type==='button'">
-			<el-radio-button :label="radio[valueKey]" :key="radio[valueKey]" v-for="radio in radios">{{radio[showKey]}}</el-radio-button>
+			<el-checkbox-button :label="radio.label" :key="radio.label" v-for="radio in radios"></el-checkbox-button>
 		</template>
 		<template v-else-if="type==='border'">
-			<el-radio :label="radio[valueKey]" border :key="radio[valueKey]" v-for="radio in radios">{{radio[showKey]}}</el-radio>
+			<el-checkbox :label="radio.label" border :key="radio.label" v-for="radio in radios"></el-checkbox>
 		</template>
 		<template v-else>
-			<el-radio :label="radio[valueKey]" :key="radio[valueKey]" v-for="radio in radios">{{radio[showKey]}}</el-radio>
+			<el-checkbox :label="radio.label" :key="radio.label" v-for="radio in radios"></el-checkbox>
 		</template>
-	</el-radio-group>
+	</el-checkbox-group>
 </template>
 
 <script>
 export default {
-	name: 'ComRadio',
+	name: 'ComCheckbox',
 	props: {
 		value: {
-			type: [String, Number, Boolean]
-		},
-		radios: {
 			type: Array,
 			default: function() {
 				return []
 			}
 		},
-		valueKey: {
-			type: String,
-			default: 'label'
+		checkboxes: {
+			type: Array,
+			default: function() {
+				return []
+			}
 		},
-		showKey: {
-			type: String,
-			default: 'name'
+		min: {
+			type: Number
+		},
+		max: {
+			type: Number
 		},
 		type: {
 			type: String,
