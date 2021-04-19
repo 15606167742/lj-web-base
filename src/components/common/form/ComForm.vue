@@ -3,7 +3,6 @@ export default {
 	name: 'ComForm',
 	render(createElement) {
 		let $this = this;
-		console.log(this.$slots.default[0]);
 		let elFormItems = createFormItems($this.$slots.default);
 		//遍历生成一层子节点
 		function createFormItems(VNodes) {

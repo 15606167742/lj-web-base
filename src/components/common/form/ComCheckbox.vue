@@ -2,22 +2,24 @@
 	<el-checkbox-group
 		:value="value"
 		:checkboxes="checkboxes"
+		:value-key="valueKey"
+		:show-key="showKey"
 		:min="min"
 		:max="max"
 		:type="type"
 		:size="size"
-		:textColor="textColor"
+		:text-color="textColor"
 		:fill="fill"
 		@input="$emit('input', $event)"
 	>
-		<template v-if="type==='button'">
-			<el-checkbox-button :label="radio.label" :key="radio.label" v-for="radio in radios"></el-checkbox-button>
+		<template v-if="type === 'button'">
+			<el-checkbox-button :label="checkbox[valueKey]" :key="checkbox[valueKey]" v-for="checkbox in checkboxes">{{ checkbox[showKey] }}</el-checkbox-button>
 		</template>
-		<template v-else-if="type==='border'">
-			<el-checkbox :label="radio.label" border :key="radio.label" v-for="radio in radios"></el-checkbox>
+		<template v-else-if="type === 'border'">
+			<el-checkbox :label="checkbox[valueKey]" border :key="checkbox[valueKey]" v-for="checkbox in checkboxes">{{ checkbox[showKey] }}</el-checkbox>
 		</template>
 		<template v-else>
-			<el-checkbox :label="radio.label" :key="radio.label" v-for="radio in radios"></el-checkbox>
+			<el-checkbox :label="checkbox[valueKey]" :key="checkbox[valueKey]" v-for="checkbox in checkboxes">{{ checkbox[showKey] }}</el-checkbox>
 		</template>
 	</el-checkbox-group>
 </template>
@@ -29,14 +31,22 @@ export default {
 		value: {
 			type: Array,
 			default: function() {
-				return []
+				return [];
 			}
 		},
 		checkboxes: {
 			type: Array,
 			default: function() {
-				return []
+				return [];
 			}
+		},
+		valueKey: {
+			type: String,
+			default: 'label'
+		},
+		showKey: {
+			type: String,
+			default: 'name'
 		},
 		min: {
 			type: Number
@@ -64,43 +74,10 @@ export default {
 		}
 	},
 	data() {
-		return {
-			
-		};
+		return {};
 	},
 	methods: {}
 };
 </script>
 
-<style scoped lang="scss">
-	.el-radio{
-		line-height: 40px;
-	}
-	.el-radio.is-bordered{
-		line-height: 1;
-	}
-	.el-form-item--mini{
-		.el-radio{
-			line-height: 28px;
-		}
-		.el-radio--mini.is-bordered{
-			line-height: 1;
-		}
-	}
-	.el-form-item--small{
-		.el-radio{
-			line-height: 32px;
-		}
-		.el-radio--small.is-bordered{
-			line-height: 1;
-		}
-	}
-	.el-form-item--medium{
-		.el-radio{
-			line-height: 36px;
-		}
-		.el-radio--medium.is-bordered{
-			line-height: 1;
-		}
-	}
-</style>
+<style></style>

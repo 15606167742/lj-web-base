@@ -16,12 +16,15 @@
 					</el-form-item>
 				</el-form-item>
 			</el-form> -->
+			<com-check v-model="formdata.check" fill="yellow">协议</com-check>
+			<com-checkbox v-model="formdata.sexes" :checkboxes="sexRadio" type="border" label="性别"></com-checkbox>
 			<com-form ref="form" :model="formdata" model-name="formdata" :rules="formRules">
 				<com-text v-model="formdata.username" label="用户名" :minlength="3" :maxlength="10" placeholder="啥" />
 				<com-password v-model="formdata.password" label="密码" :rules="passwordRules"></com-password>
-				<com-radio v-model="formdata.sex" :radios="sexRadio" type="button" label="性别"></com-radio>
-				<com-radio v-model="formdata.sex" :radios="sexRadio" type="border" label="性别"></com-radio>
 				<com-radio v-model="formdata.sex" :radios="sexRadio" label="性别"></com-radio>
+				<com-checkbox v-model="formdata.sexes" :checkboxes="sexRadio" type="button" label="性别"></com-checkbox>
+				<com-checkbox v-model="formdata.sexes" :checkboxes="sexRadio" type="border" label="性别"></com-checkbox>
+				<com-checkbox v-model="formdata.sexes" :checkboxes="sexRadio" label="性别" :min="1" :max="2"></com-checkbox>
 				<!-- <com-text v-model="test.name" label="测试" size="large" colspan="2" />
 				<com-text v-model="formdata.info.age" label="大运小云年龄" :rules="passwordRules" />
 				<com-textarea v-model="formdata.abc" label="文本" :rules="passwordRules" />
@@ -50,6 +53,8 @@
 	// import ComTextarea from '@/components/common/form/ComTextarea.vue';
 	import ComPassword from '@/components/common/form/ComPassword.vue';
 	import ComRadio from '@/components/common/form/ComRadio.vue';
+	import ComCheckbox from '@/components/common/form/ComCheckbox.vue';
+	import ComCheck from '@/components/common/form/ComCheck.vue';
 	import ComForm from '@/components/common/form/ComForm.vue';
 	import {
 		login
@@ -62,6 +67,8 @@
 			// ComTextarea,
 			ComPassword,
 			ComRadio,
+			ComCheckbox,
+			ComCheck,
 			ComForm
 		},
 		data() {
@@ -75,6 +82,8 @@
 					abc: 'abc',
 					name: '测试用例',
 					sex: 1,
+					sexes: [],
+					check: '',
 					// username: 'ccc',
 					// password: '123456',
 					info: {
@@ -99,6 +108,9 @@
 				}, {
 					label: 2,
 					name: '女',
+				}, {
+					label: 3,
+					name: '其他',
 				}],
 			};
 		},
