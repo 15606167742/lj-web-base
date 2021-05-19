@@ -5,8 +5,6 @@
 		:false-label="falseLabel"
 		border
 		:size="size"
-		:textColor="textColor"
-		:fill="fill"
 		@input="$emit('input', $event)"
 		v-if="type === 'border'"
 	>
@@ -19,8 +17,6 @@
 		:true-label="trueLabel"
 		:false-label="falseLabel"
 		:size="size"
-		:textColor="textColor"
-		:fill="fill"
 		@input="$emit('input', $event)"
 		v-else
 	>
@@ -48,7 +44,7 @@ export default {
 		type: {
 			type: String,
 			validator: function(value) {
-				return ['border', 'button'].indexOf(value) !== -1;
+				return ['border'].indexOf(value) !== -1;
 			}
 		},
 		size: {
@@ -57,12 +53,6 @@ export default {
 				return ['large', 'medium', 'small', 'mini'].indexOf(value) !== -1;
 			}
 		},
-		textColor: {
-			type: String
-		},
-		fill: {
-			type: String
-		}
 	},
 	data() {
 		return {};

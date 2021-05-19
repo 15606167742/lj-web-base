@@ -25,17 +25,6 @@
 				<com-checkbox v-model="formdata.sexes" :checkboxes="sexRadio" type="button" label="性别"></com-checkbox>
 				<com-checkbox v-model="formdata.sexes" :checkboxes="sexRadio" type="border" label="性别"></com-checkbox>
 				<com-checkbox v-model="formdata.sexes" :checkboxes="sexRadio" label="性别" :min="1" :max="2"></com-checkbox>
-				<!-- <com-text v-model="test.name" label="测试" size="large" colspan="2" />
-				<com-text v-model="formdata.info.age" label="大运小云年龄" :rules="passwordRules" />
-				<com-textarea v-model="formdata.abc" label="文本" :rules="passwordRules" />
-				<input :value="formdata.abc" label="abc" />
-				<com-template colspan="2" label="起止日期" required>
-					<com-text v-model="formdata.name" :rules="passwordRules" />
-					<span style="margin: 0 10px;">-</span>
-					<com-text v-model="formdata.info.age" />
-				</com-template>
-				<input v-model="formdata.password" :rules="passwordRules" /> -->
-
 				<com-template label="按钮" :colspan="2">
 					<el-button type="primary" @click="onSubmit">立即创建</el-button>
 					<el-button type="warning" @click="onReset">重置</el-button>
