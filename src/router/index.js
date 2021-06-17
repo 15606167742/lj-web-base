@@ -32,13 +32,15 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	if (to.path !== '/login' && !store.state.token) {
-		next({
-			path: '/login'
-		})
-	} else {
-		next()
-	}
+	console.log(store)
+	next()
+	// if (to.path !== '/login' && !store.state.token) {
+	// 	next({
+	// 		path: '/login'
+	// 	})
+	// } else {
+	// 	next()
+	// }
 })
 
 export default router
